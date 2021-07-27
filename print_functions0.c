@@ -5,6 +5,7 @@
  * @ap: va_list from calling function
  * Return: integer count of characters printed
  */
+
 int print_char(va_list ap)
 {
 	return (_putchar(va_arg(ap, int)));
@@ -15,6 +16,7 @@ int print_char(va_list ap)
  * @ap: va_list from calling function
  * Return: integer count of characters printed
  */
+
 int print_string(va_list ap)
 {
 	char *str = va_arg(ap, char *);

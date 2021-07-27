@@ -7,8 +7,9 @@
 /**
  * struct printer - format printer struct
  * @spec: the format specifier
- * @fn: the function that handles spec
+ * @fn: the function that handles @spec
  */
+
 typedef struct printer
 {
 	char *spec;
@@ -27,4 +28,5 @@ int print_digit(int num, int *count);
 int print_unsigned_digit(unsigned int num, int *count);
 int print_digit_octal(unsigned int num, int *count);
 int call_print_fn(char ch, va_list ap);
+
 #endif /* __HOLBERTON_H__ */
