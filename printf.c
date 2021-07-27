@@ -1,52 +1,72 @@
-#include <stdarg.h>
 #include "holberton.h"
+#include "funcs_array.h"
 
 /**
- * _printf - produces output according to a format
- * @format: pointer to a string and may include formats
- * Return: integer, return number of printed characters
+ * _printf - prints to stdout according to a format string
+ * @format: constant string containing zero or more directives
+ * Return: int number of characters printed (excluding terminating null-byte)
  */
-
 int _printf(const char *format, ...)
 {
-	unsigned int i = 0, result = 0, va_arg_loop_condition = 1;
-	va_list args;
-	int (*fmt_func)(va_list *);
+	int i, count = 0;
+	va_list ap;
 
-	va_start(args, format);
+	va_start(ap, format);
 
-	while (va_arg_loop_condition)
+	if (format == NULL)
+		return (-1);
+
+	for (i = 0; format[i] != '\0'; i++)
 	{
-		while (format && format[i] != '\0')
+		if (format[i] != '%')
 		{
-			if (format[i] == '%')
-			{
-				i++;
-				fmt_func = get_fmt_func(format[i]);
-
-				if (fmt_func)
-				{
-					result += fmt_func(&args);
-					i++;
-					continue;
-				}
-				else
-				{
-					result += print_normal_char(format[i]);
-				}
-			}
-			else
-			{
-				result += print_normal_char(format[i]);
-			}
-
-			i++;
+			count += _putchar(format[i]);
+			continue;
 		}
-
-		va_arg_loop_condition = 0;
+		switch (format[++i])
+		{
+		case '%':
+			count += _putchar('%');
+			break;
+		case 'c':
+		case 's':
+		case 'd':
+		case 'i':
+		case 'u':
+		case 'o':
+			count += call_print_fn(format[i], ap);
+			break;
+		default:
+			if (!format[i])
+				return (-1);
+			count += _putchar('%');
+			count += _putchar(format[i]);
+			break;
+		}
 	}
+	va_end(ap);
+	return (count);
+}
 
-	va_end(args);
 
-	return (result);
+/**
+ * call_print_fn - call appropriate print fn
+ * @ch: format string character
+ * @ap: object to be printed
+ * Return: number of characters printed
+ */
+int call_print_fn(char ch, va_list ap)
+{
+	int j;
+	int count = 0;
+
+	for (j = 0; funcs[j].spec != NULL; j++)
+	{
+		if (ch == funcs[j].spec[0])
+		{
+			count += funcs[j].fn(ap);
+			break;
+		}
+	}
+	return (count);
 }

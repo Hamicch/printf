@@ -1,30 +1,30 @@
-#ifndef PRINTF_FUNCTIONS_H_
-#define PRINTF_FUNCTIONS_H_
+#ifndef __HOLBERTON_H__
+#define __HOLBERTON_H__
+
 #include <stdarg.h>
+#include <stdlib.h>
 
 /**
- * struct fmt_struct - format-type class/object/struct
- * @fmt_identifier: format identifier
- * @fmt_print_func: pointer to function that prints in the format of @format
+ * struct printer - format printer struct
+ * @spec: the format specifier
+ * @fn: the function that handles spec
  */
-
-struct fmt_struct
+typedef struct printer
 {
-	char fmt_identifier;
-	int (*fmt_print_func)(va_list *arg_list);
-};
-
-typedef struct fmt_struct fmt_struct_data_type;
+	char *spec;
+	int (*fn)(va_list);
+} print_t;
 
 int _putchar(char c);
 int _printf(const char *format, ...);
-
-int (*get_fmt_func(char identifier))(va_list *);
-
-int print_char(va_list *arg);
-int print_int(va_list *arg);
-int print_float(va_list *arg);
-int print_string(va_list *arg);
-int print_normal_char(char c);
-
-#endif /* #ifndef PRINTF_FUNCTIONS_H_ */
+int print_char(va_list ap);
+int print_string(va_list ap);
+int print_space(va_list ap);
+int print_int(va_list ap);
+int print_unsigned(va_list ap);
+int print_octal(va_list ap);
+int print_digit(int num, int *count);
+int print_unsigned_digit(unsigned int num, int *count);
+int print_digit_octal(unsigned int num, int *count);
+int call_print_fn(char ch, va_list ap);
+#endif /* __HOLBERTON_H__ */
