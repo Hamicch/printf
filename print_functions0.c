@@ -1,31 +1,16 @@
 #include "holberton.h"
 
 /**
- * print_char - prints a char parameter from a va_list
- * @ap: va_list from calling function
- * Return: integer count of characters printed
+ * print_binary - function that prints the binary representation of a number
+ * @n: number to be printed in binary
+ * @printed: hold the number of characters printed
  */
-
-int print_char(va_list ap)
+void print_binary(unsigned int n, unsigned int *printed)
 {
-	return (_putchar(va_arg(ap, int)));
-}
-
-/**
- * print_string - prints a string parameter from a va_list that is predefined
- * @ap: va_list from calling function
- * Return: integer count of characters printed
- */
-
-int print_string(va_list ap)
-{
-	char *str = va_arg(ap, char *);
-	int count = 0;
-
-	if (!str)
-		str = "(null)";
-	while (str[count] != '\0')
-		count += _putchar(str[count]);
-
-	return (count);
+	if (n > 1)
+	{
+		*printed += 1;
+		print_binary(n >> 1, printed);
+	}
+	_putchar((n & 1) + '0');
 }
