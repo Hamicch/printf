@@ -11,7 +11,7 @@ int print_char(va_list ap)
 }
 
 /**
- * print_string - prints a string parameter from a va_list
+ * print_string - prints a string parameter from a va_list that is predefined
  * @ap: va_list from calling function
  * Return: integer count of characters printed
  */
