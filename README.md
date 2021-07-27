@@ -10,4 +10,4 @@ At the end of this project, you are expected to be able to;
 
 - Write your own "printf" function
 
-Developed by *[Hayatu Sanusi](https://github.com/Hamicch) and *[Aaron Muzira](https://github.com/aaronkaddu).
+Developed by [Hayatu Sanusi](https://github.com/Hamicch) and [Aaron Muzira](https://github.com/aaronkaddu).
