@@ -5,6 +5,7 @@
  * @ap: va_list object from calling function
  * Return: integer count of characters printed
  */
+
 int print_unsigned(va_list ap)
 {
 	int *count_ptr;
@@ -29,6 +30,7 @@ int print_unsigned(va_list ap)
  * @count: pointer to integer count digits
  * Return: pointer to integer count of character printed
  */
+
 int print_unsigned_digit(unsigned int num, int *count)
 {
 	if (num / 10)
@@ -44,6 +46,7 @@ int print_unsigned_digit(unsigned int num, int *count)
  * @ap: va_list object from calling function
  * Return: integer count of characters printed
  */
+
 int print_octal(va_list ap)
 {
 	int *count_ptr;
@@ -68,6 +71,7 @@ int print_octal(va_list ap)
  * @count: pointer to integer count digits
  * Return: pointer to integer count of character printed
  */
+
 int print_digit_octal(unsigned int num, int *count)
 {
 	if (num / 8)
