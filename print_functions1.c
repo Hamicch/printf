@@ -6,6 +6,7 @@
  * @ap: va_list object from calling function
  * Return: integer count of characters printed
  */
+
 int print_int(va_list ap)
 {
 	int *count_ptr;
@@ -30,6 +31,7 @@ int print_int(va_list ap)
  * @count: pointer to integer count digits
  * Return: pointer to integer count of character printed
  */
+
 int print_digit(int num, int *count)
 {
 	if (num < 0)
