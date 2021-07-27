@@ -1,60 +1,124 @@
-#include <limits.h>
 #include "holberton.h"
-
+#include <unistd.h>
+#include <stdio.h>
 /**
- * print_int - prints an integer from va_list
- * @ap: va_list object from calling function
- * Return: integer count of characters printed
+ * print_char - writes the character c to stdout
+ * @arg: argument
+ *
+ * Return: On success 1.
+ * On error, -1 is returned, and errno is set appropriately.
  */
-
-int print_int(va_list ap)
+int print_char(va_list arg)
 {
-	int *count_ptr;
-	int num;
-
-	count_ptr = malloc(sizeof(*count_ptr));
-
-	if (!count_ptr)
-		exit(-1);
-
-	*count_ptr = 0;
-	num = va_arg(ap, int);
-
-	(*count_ptr) = print_digit(num, count_ptr);
-
-	return (*count_ptr);
+	return (_putchar(va_arg(arg, int)));
 }
 
 /**
- * print_digit - print the digits recursively
- * @num: next int in the va_arg list
- * @count: pointer to integer count digits
- * Return: pointer to integer count of character printed
+ * print_int - prints an integer.
+ * @arg: argument
+ * Return: 0
  */
 
-int print_digit(int num, int *count)
+int print_int(va_list arg)
 {
-	if (num < 0)
-	{
-		if (num == INT_MIN)
-		{
-			(*count) += _putchar('-');
-			num++;
-			num = -num;
-			if (num / 10)
-				print_digit(num / 10, count);
-			(*count) += _putchar((num % 10) + 1 + '0');
-			return (*count);
-		}
-		else
-		{
-			(*count) += _putchar('-');
-			num = -num;
-		}
-	}
-	if (num / 10)
-		print_digit(num / 10, count);
 
-	(*count) += _putchar((num % 10) + '0');
-	return (*count);
+unsigned int divisor = 1, i, resp, charPrinted = 0;
+int n = va_arg(arg, int);
+
+if (n < 0)
+{
+	_putchar('-');
+	charPrinted++;
+	n *= -1;
+}
+
+for (i = 0; n / divisor > 9; i++, divisor *= 10)
+;
+
+for (; divisor >= 1; n %= divisor, divisor /= 10, charPrinted++)
+{
+	resp = n / divisor;
+	_putchar('0' + resp);
+}
+return (charPrinted);
+}
+
+
+
+/**
+ * print_STR - prints a string with a `S` (upper case) specificer
+ * @arg: argument
+ * Return: number of character printed
+ */
+
+int print_STR(va_list arg)
+{
+int i;
+char *str = va_arg(arg, char*);
+
+if (str == NULL)
+	str = "(null)";
+else if (*str == '\0')
+	return (-1);
+
+for (i = 0; str[i]; i++)
+{
+	if ((str[i] < 32 && str[i] > 0) || str[i] >= 127)
+	{
+		_putchar('\\');
+		_putchar('x');
+		if (i < 16)
+			_putchar('0');
+
+		print_unsignedIntToHex(str[i], 'A');
+	}
+	else
+		_putchar(str[i]);
+}
+
+return (i);
+}
+
+/**
+ * print_str - prints a string with a `s` (lower case) specifier
+ * @arg: argument
+ * Return: number of character printed
+ */
+
+int print_str(va_list arg)
+{
+int i;
+char *str = va_arg(arg, char*);
+
+if (str == NULL)
+	str = "(null)";
+else if (*str == '\0')
+	return (-1);
+
+for (i = 0; str[i]; i++)
+	_putchar(str[i]);
+
+return (i);
+}
+
+/**
+ * print_unsigned - prints an unsigned int.
+ * @arg: argument
+ * Return: 0
+ */
+
+int print_unsigned(va_list arg)
+{
+int divisor = 1, i, resp;
+unsigned int n = va_arg(arg, unsigned int);
+
+for (i = 0; n / divisor > 9; i++, divisor *= 10)
+;
+
+for (; divisor >= 1; n %= divisor, divisor /= 10)
+{
+	resp = n / divisor;
+	_putchar('0' + resp);
+}
+return (i + 1);
 }

@@ -1,19 +1,59 @@
 #include "holberton.h"
-#include "funcs_array.h"
+#include <stdlib.h>
+#include <stdio.h>
 
 /**
- * _printf - prints to stdout according to a format string
- * @format: constant string containing zero or more directives
- * Return: int number of characters printed (excluding terminating null-byte)
+ * printSpecials - prints special characters
+ * @next: character after the %
+ * @arg: argument for the indentifier
+ * Return: the number of characters printed
+ * (excluding the null byte used to end output to strings)
+ */
+
+int printSpecials(char next, va_list arg)
+{
+	int functsIndex;
+
+	specialsStruct functs[] = {
+		{"c", print_char},
+		{"s", print_str},
+		{"d", print_int},
+		{"i", print_int},
+		{"u", print_unsigned},
+		{"b", print_unsignedToBinary},
+		{"o", print_oct},
+		{"x", print_hex},
+		{"X", print_HEX},
+		{"S", print_STR},
+		{NULL, NULL}
+	};
+
+	for (functsIndex = 0; functs[functsIndex].indentifier != NULL; functsIndex++)
+	{
+		if (functs[functsIndex].indentifier[0] == next)
+			return (functs[functsIndex].printer(arg));
+	}
+	return (0);
+}
+
+/**
+ * _printf - mimic printf from stdio
+ * Description: produces output according to a format
+ * write output to stdout, the standard output stream
+ * @format: character string composed of zero or more directives
+ *
+ * Return: the number of characters printed
+ * (excluding the null byte used to end output to strings)
+ * return -1 for incomplete specials error
  */
 
 int _printf(const char *format, ...)
 {
-	int i, count = 0;
-	va_list ap;
+	unsigned int i;
+	int specialsPrinted = 0, charPrinted = 0;
+	va_list arg;
 
-	va_start(ap, format);
-
+	va_start(arg, format);
 	if (format == NULL)
 		return (-1);
 
@@ -21,54 +61,32 @@ int _printf(const char *format, ...)
 	{
 		if (format[i] != '%')
 		{
-			count += _putchar(format[i]);
+			_putchar(format[i]);
+			charPrinted++;
 			continue;
 		}
-		switch (format[++i])
+		if (format[i + 1] == '%')
 		{
-		case '%':
-			count += _putchar('%');
-			break;
-		case 'c':
-		case 's':
-		case 'd':
-		case 'i':
-		case 'u':
-		case 'o':
-			count += call_print_fn(format[i], ap);
-			break;
-		default:
-			if (!format[i])
-				return (-1);
-			count += _putchar('%');
-			count += _putchar(format[i]);
-			break;
+			_putchar('%');
+			charPrinted++;
+			i++;
+			continue;
+		}
+		if (format[i + 1] == '\0')
+			return (-1);
+
+		specialsPrinted = printSpecials(format[i + 1], arg);
+		if (specialsPrinted == -1 || specialsPrinted != 0)
+			i++;
+		if (specialsPrinted > 0)
+			charPrinted += specialsPrinted;
+
+		if (specialsPrinted == 0)
+		{
+			_putchar('%');
+			charPrinted++;
 		}
 	}
-	va_end(ap);
-	return (count);
-}
-
-
-/**
- * call_print_fn - call appropriate print function in the doument 
- * @ch: format string character
- * @ap: object to be printed
- * Return: number of characters printed
- */
-
-int call_print_fn(char ch, va_list ap)
-{
-	int j;
-	int count = 0;
-
-	for (j = 0; funcs[j].spec != NULL; j++)
-	{
-		if (ch == funcs[j].spec[0])
-		{
-			count += funcs[j].fn(ap);
-			break;
-		}
-	}
-	return (count);
+	va_end(arg);
+	return (charPrinted);
 }

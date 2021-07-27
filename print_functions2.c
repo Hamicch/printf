@@ -1,80 +1,92 @@
 #include "holberton.h"
+#include <stdarg.h>
+#include <stdlib.h>
 
 /**
- * print_unsigned - prints an unsigned int from va_list
- * @ap: va_list object from calling function
- * Return: integer count of characters printed
+ * print_unsignedToBinary - prints an integer.
+ * @arg: argument
+ * Return: 0
  */
-
-int print_unsigned(va_list ap)
+int print_unsignedToBinary(va_list arg)
 {
-	int *count_ptr;
-	unsigned int num;
 
-	count_ptr = malloc(sizeof(*count_ptr));
+unsigned int n = va_arg(arg, unsigned int);
+unsigned int printed;
 
-	if (!count_ptr)
-		exit(-1);
+print_binary(n, &printed);
+print_binary(n, &printed);
 
-	*count_ptr = 0;
-	num = va_arg(ap, unsigned int);
-
-	(*count_ptr) = print_unsigned_digit(num, count_ptr);
-
-	return (*count_ptr);
-}
-
-/**
- * print_unsigned_digit - print the digits recursively
- * @num: next unsigned int in the va_arg list
- * @count: pointer to integer count digits
- * Return: pointer to integer count of character printed
- */
-
-int print_unsigned_digit(unsigned int num, int *count)
-{
-	if (num / 10)
-		print_unsigned_digit(num / 10, count);
-
-	(*count) += _putchar((num % 10) + '0');
-	return (*count);
+return (printed);
 }
 
 
 /**
- * print_octal - prints an unsigned int octal from va_list
- * @ap: va_list object from calling function
- * Return: integer count of characters printed
+ * print_oct - prints number in octal base.
+ * @arg: list containing octal number to be printed
+ * Return: number of octals printed
  */
-int print_octal(va_list ap)
+
+int print_oct(va_list arg)
 {
-	int *count_ptr;
-	unsigned int num;
+	unsigned int num = va_arg(arg, unsigned int);
+	unsigned int copy;
+	char *octa;
+	int i, j, charPrinted = 0;
 
-	count_ptr = malloc(sizeof(*count_ptr));
+	if (num == 0)
+		return (_putchar('0'));
+	for (copy = num; copy != 0; j++)
+	{
+		copy = copy / 8;
+	}
+	octa = malloc(j);
+	if (!octa)
+		return (-1);
 
-	if (!count_ptr)
-		exit(-1);
+	for (i = j - 1; i >= 0; i--)
+	{
+		octa[i] = num % 8 + '0';
+		num = num / 8;
+	}
 
-	*count_ptr = 0;
-	num = va_arg(ap, unsigned int);
-
-	(*count_ptr) = print_digit_octal(num, count_ptr);
-
-	return (*count_ptr);
+	for (i = 0; i < j && octa[i] == '0'; i++)
+		;
+	for (; i < j; i++)
+	{
+		_putchar(octa[i]);
+		charPrinted++;
+	}
+	free(octa);
+	return (charPrinted);
 }
 
 /**
- * print_digit_octal - print the digits recursively
- * @num: next usigned octal int in the va_arg list
- * @count: pointer to integer count digits
- * Return: pointer to integer count of character printed
+ * print_unsignedIntToHex - prints unsigned int to hexadecimal.
+ * @num: number to print
+ * @_case: letter `a` on the case to print it (upper or lower)
+ * Return: number or char printed
  */
-int print_digit_octal(unsigned int num, int *count)
+int print_unsignedIntToHex(unsigned int num, char _case)
 {
-	if (num / 8)
-		print_digit_octal(num / 8, count);
+	unsigned int num2;
+	int i, j, remainder, nbrCharacters = 0;
+	char *numhex;
 
-	(*count) += _putchar((num % 8) + '0');
-	return (*count);
+	for (num2 = num; num2 != 0; nbrCharacters++, num2 /= 16)
+	;
+
+	numhex = malloc(nbrCharacters);
+	for (i = 0; num != 0; i++)
+	{
+		remainder = num % 16;
+		if (remainder < 10)
+			numhex[i] = remainder + '0';
+		else
+			numhex[i] = remainder - 10 + _case;
+		num = num / 16;
+	}
+	for (j = i - 1; j >= 0; j--)
+		_putchar(numhex[j]);
+	free(numhex);
+	return (nbrCharacters);
 }
