@@ -51,7 +51,7 @@ int _printf(const char *format, ...)
 
 
 /**
- * call_print_fn - call appropriate print fn
+ * call_print_fn - call appropriate print function in the doument 
  * @ch: format string character
  * @ap: object to be printed
  * Return: number of characters printed
