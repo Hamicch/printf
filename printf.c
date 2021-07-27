@@ -56,6 +56,7 @@ int _printf(const char *format, ...)
  * @ap: object to be printed
  * Return: number of characters printed
  */
+
 int call_print_fn(char ch, va_list ap)
 {
 	int j;
